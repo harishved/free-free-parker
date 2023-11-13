@@ -1,0 +1,18 @@
+Code to compute free-free flux density of a Parker wind in the Rayleigh Jeans limit
+
+Files
+-------
+utils.py: Utility functions
+example_1.py: Example code
+example_2.py: Exam[ple code
+parker_wind_vel_sol_lin.npz: Normalized Parker velocity solution (precomputed on a linear grid)
+gauntff.dat: Gaunt factor tables from van Hoof et al. https://ui.adsabs.harvard.edu/abs/2014MNRAS.444..420V/abstract
+const.py: Fundamental constants
+matplotlibrc: MatPlotLib configuration file
+colors.py: colors for pyplot
+#
+#
+example_1.py example code outputs two pdf files:
+y_profile.pdf has the lateral (i.e. in the plane of sky) profiles for flux density and optical depth for each freq
+tau_flux.pdf has the peak optical depth in ray trace + flux density as a function of freq
+

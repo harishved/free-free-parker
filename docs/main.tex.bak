@@ -1,0 +1,104 @@
+\documentclass[12pt]{article}
+\usepackage[left=1.2in,right=1.2in,top=1.2in,bottom=1.2in]{geometry}
+\usepackage{graphicx}
+
+
+\title{Bremsstrahlung flux from a spherically symmetric Parker wind in the Rayleigh-Jeans limit}
+\author{Harish Vedantham}
+\date{\today}
+\begin{document}
+\maketitle
+%
+\section{Radiative transfer}
+The equation of Radiative transfer is 
+\begin{equation}
+\frac{{\rm d}I}{{\rm d}s} = -\alpha I + j
+\end{equation}
+where $j$ is the emissivity (ergs/s/Hs/cm$^3$/sr), $\alpha$ is the coefficient of absorption (1/cm), I is the specific intensity (erg/s/Hs/cm$^2$/sr) and $s$ is the ray path length (cm).
+It is usually written in terms of the optical depth ${\rm d}\tau = \alpha{\rm d}s$ as 
+\begin{equation}
+\frac{{\rm d}I}{{\rm d}\tau} = -I + S
+\end{equation}
+where $S = j/\alpha$ is the source function.
+
+The solution to the equation ($I$ at the observer) is well known:
+\begin{equation}
+I(\tau_{\rm max}) = I(0)\exp(-\tau) + \int_{0}^{\tau_{\rm max}}\,{\rm d}\tau^\prime S(\tau^\prime) \exp(\tau^\prime -\tau)
+\end{equation}
+Here $\tau=0$ is the optical depth at the back of the source as seen by the observer and $\tau=\tau_{\rm max}$ the peak optical depth of the source which is reached at the front of the source as seen by the observer. From the front of the source to the observer lies vaccume where specific intensity does not change due to the conservation of \'etendue. 
+
+
+In the presence of a medium with refrctive index $N$, due to Snell's refraction, the ray bundles maintain the value of $N \sin \alpha$ where $\alpha$ is the angle between the ray and the refractive index's gradient. The radiative transfer equation then requires modification to conserve energy:
+
+\begin{equation}
+\frac{\rm d}{{\rm d}s}\left(\frac{I}{N^2}\right) = \left(\frac{j}{N^2}\right) - \alpha\frac{I}{N^2}
+\end{equation}
+
+Again, casting the equation in terms of optical depth we get
+\begin{equation}
+\frac{\rm d}{{\rm d}\tau}\left(\frac{I}{N^2}\right) = \left(\frac{S}{N^2}\right) - \frac{I}{N^2}
+\end{equation}
+
+The solution to this equation can be obtained by analogy by noting that $I/N^2$ and $S/N^2$ are the new variables. It is vital to note that in $N^2(\tau)$ should be interpreted as the refractiuve index squared at the location where an optical depth of $\tau$ is reached. Hence $N(0)=N(\tau_{\rm max})=1$ since both locations are in vaccume. The solution to the new transfer equation is 
+\begin{equation}
+I(\tau_{\rm max}) = I(0)\exp(-\tau) + \int_{0}^{\tau_{\rm max}}\,{\rm d}\tau^\prime \frac{S(\tau^\prime)}{N(\tau^\prime)^2} \exp(\tau^\prime -\tau)
+\end{equation}
+where the location dependence of $N$ has been made explicit here (Note that $\tau$ is best interpreted as a variable denoting location).
+
+We are interested in radiative transfer through a plasma `cloud' with incident intensity of $I(0)=0$ which gives
+\begin{equation}
+I(\tau_{\rm max}) = \int_{0}^{\tau_{\rm max}}\,{\rm d}\tau^\prime \frac{S(\tau^\prime)}{N(\tau^\prime)^2} \exp(\tau^\prime -\tau)
+\end{equation}
+
+So far the equations are independent of the mechanism of emission. Let us now consider Bremsstrahlung. The absorption coefficient for a thermal medium is
+
+\begin{equation}
+\alpha = 0.018T^{-3/2}Z^2n^2_e\nu^{-2}\bar{g_{ff}}/N
+\end{equation}
+where $Z$ is the average ionic charge, $\nu$ is the wave frequency, $n_e$ is the electron density, $n_i$ is the ion density,  and $\bar{g_{ff}}$ is the thermally averaged Gaunt factor. 
+The division by refractuve index take accounty of the reduced group velcity in the medium. 
+
+and the emission co-efficient is
+\begin{equation}
+j = 5.444436\times 10^{-39} Z^2n^2_eT^{-1/2}\bar{g_{ff}} N 
+\end{equation}
+
+The source function in a plasma is computed with the above absorption and emission co-efficient. The upshot is that the source function in a plasma is given by the Planck function multiplied by $N^2$.
+
+Finally, the plasma refractive index in the absence of a magnetic field is
+\begin{equation}
+N = \left(1-\frac{\nu_p^2}{\nu^2}\right)^{1/2}
+\end{equation}
+
+The above equations contain all the necessary information to compute the emergent free-free flux denisty. 
+
+
+
+\section{Computations}
+
+Let us assume the solar values of $Z^2=1.16$ hereafter which is based on an abundance of 91.2\% Hydrogen and 8.8\% doubly-ionized Helium.
+Let us also assumne that the rays are linear i.e. we neglect the bending of rays towards the direction of lower phase velocity as anticipated from Snell's law.
+
+
+The main issue in computations is to decide the extent of the simulation domain and its grid resolution. The computational domain must be large enough to capture most of the emission. The source of emission can be split into three Zones. Close to the star, it is possible to have a region where the plasma frequency is larger than the wave frequency. In this zone, called Zone-1, no propagating modes exist which means this Zone is beyond the simulation domain. Note that the Zone-1 need not exist.
+
+Above Zone-1, we have Zone-2 where the emission is optically thick, eventually giving way to Zone-3 where the emission is optically thin. Again, Zone-2 need not exist for a given set of parameters and Zone-3 may begin at the base of the corona. 
+
+The simulation domain must capture the volume of Zone-3 where majority of the observable optically thin emission originates. To compute the extent of Zone-3 we start with a very simple 1D model where 
+
+Zone-1 boundary is straightforward to compute using the plasma refractive index expression. 
+Zone-2 does not have to be explicitly computed (see below) but we do need Zone-3 size to set up the computation domain. An approximate value for Zone-3 size can be estimated by using a single radial ray to compute the flux contribution at different radii and truncating the Zone-3 at a radius beyind which we expect the contribution to br negligible. This is done in the function \texttt{int\textunderscore 1d\textunderscore approx\textunderscore parker}.
+
+Once this is done the emergent flux is computed by solving the radiative transfer equation on a set of rays such as the ones depicted in the figure by grey arrows. 
+
+ 
+\begin{figure}
+\includegraphics[width=0.7\linewidth]{free-free-zones.png}
+\caption{Free Free zones}
+\end{figure}
+
+
+
+
+
+\end{document}
