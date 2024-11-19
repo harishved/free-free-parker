@@ -108,7 +108,7 @@ def give_density_profile_parker(mstar,rstar,T,rvec,Mdot,mu=0.6):
    # mu = Mean atomic weight
    #
    tp = np.load("parker_wind_vel_sol_lin.npz")
-   cs2 = C_k*T/C_mp
+   cs2 = C_k*T/C_mp/mu
    rc = C_G*mstar/(2*cs2)
    rnorm = rvec/rc
    cs=cs2**0.5
